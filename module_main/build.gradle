@@ -27,6 +27,9 @@ android {
         //****** End ***************************************
 
         //****** 动态设置额外信息 ***************************************
+        resValue "string", "build_time", buildTime()
+        resValue "string", "build_host", hostName()
+        resValue "string", "build_revision", revision()
         //****** End ***************************************
 
     }
@@ -53,12 +56,15 @@ android {
     }
 
 }
+//获取当前时间
 def buildTime() {
     return new Date().format("yyyy-MM-dd HH:mm:ss")
 }
+//获取电脑的用户名和PC名
 def hostName() {
     return System.getProperty("user.name") + "@" + InetAddress.localHost.hostName
 }
+//获取最后一次commit的sha值
 def revision() {
     def code = new ByteArrayOutputStream()
     exec {
