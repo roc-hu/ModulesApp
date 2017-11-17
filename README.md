@@ -4,6 +4,9 @@
 
 ### 架构图 现在的架构还比较年幼，正在成长中。
 
+![架构图](./doc/resources/ModulesApp_frame.png)
+
+
 
 ##  Update
 
