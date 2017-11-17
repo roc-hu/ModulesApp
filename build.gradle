@@ -1,0 +1,29 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+    apply from: 'versions.gradle'
+    addRepos(repositories)
+
+    dependencies {
+        classpath deps.android_gradle_plugin
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    addRepos(repositories)
+    //全局设定编码
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        //如果想要做全局配置，那么就在根目录的build.gradle中配置 gradle.md
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

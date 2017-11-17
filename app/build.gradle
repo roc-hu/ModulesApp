@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
+
+    defaultConfig {
+        applicationId "top.akit.app"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    api 'com.android.support:multidex:1.0.2'
+    implementation project(':lib_base')
+
+    if (!isModule.toBoolean()) {
+        api project(':module_main')
+        api project(':module_one')
+        api project(':module_two')
+    }
+
+    testApi deps.junit
+    androidTestApi deps.runner
+    androidTestApi deps.espresso_core
+
+
+
+}

@@ -1,0 +1,49 @@
+/**
+* Shared file between builds so that they can all use the same dependencies and
+* maven repositories.
+**/
+ext.deps = [:]
+def versions = [:]
+versions.support = "26.1.0"//
+versions.constraint_layout = "1.0.2"//
+versions.glide = "3.8.0"
+versions.arouter_api = "1.2.4"
+versions.arouter_compiler = "1.1.4"
+versions.arouter_annotation = "1.0.4"
+
+versions.android_gradle_plugin = "3.0.0"//
+versions.junit = "4.12"//
+versions.atsl_runner = "1.0.1"//
+versions.espresso = "3.0.1"//
+def deps = [:]
+
+def support = [:]
+support.app_compat = "com.android.support:appcompat-v7:$versions.support"//
+support.constraint_layout = "com.android.support.constraint:constraint-layout:$versions.constraint_layout"//
+support.recyclerview = "com.android.support:recyclerview-v7:$versions.support"//
+deps.support = support
+
+deps.arouter_api = "com.alibaba:arouter-api:$versions.arouter_api"
+deps.arouter_compiler = "com.alibaba:arouter-compiler:$versions.arouter_compiler"
+deps.arouter_annotation = "com.alibaba:arouter-annotation:$versions.arouter_annotation"
+deps.glide = "com.github.bumptech.glide:glide:$versions.glide"//
+deps.junit = "junit:junit:$versions.junit"//
+deps.runner = "com.android.support.test:runner:$versions.atsl_runner"//
+deps.espresso_core = "com.android.support.test.espresso:espresso-core:$versions.espresso"//
+deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"//
+ext.deps = deps
+
+//编译配置
+def build_versions = [:]
+build_versions.min_sdk = 14
+build_versions.target_sdk = 26
+build_versions.build_tools = "26.0.3"
+ext.build_versions = build_versions
+
+
+def addRepos(RepositoryHandler handler) {
+    handler.google()
+    handler.jcenter()
+    handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+ext.addRepos = this.&addRepos

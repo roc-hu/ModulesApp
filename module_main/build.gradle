@@ -1,0 +1,82 @@
+if (isModule.toBoolean()) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
+
+    resourcePrefix 'main_'//解决作为模块时候资源文件之间被覆盖问题
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //****** ARouter ***************************************
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
+        }
+        //****** End ***************************************
+
+        //****** 动态设置额外信息 ***************************************
+        //****** End ***************************************
+
+    }
+
+    sourceSets {
+        main{
+            if(isModule.toBoolean()){
+                manifest.srcFile 'src/main/app/AndroidManifest.xml'
+            }else{
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                //编译库的时候 排除app文件夹中的所有Java文件
+                java {
+                    exclude 'app/**'
+                }
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+def buildTime() {
+    return new Date().format("yyyy-MM-dd HH:mm:ss")
+}
+def hostName() {
+    return System.getProperty("user.name") + "@" + InetAddress.localHost.hostName
+}
+def revision() {
+    def code = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = code
+    }
+    return code.toString()
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(':lib_base')
+    //****** ARouter ***************************************
+    annotationProcessor deps.arouter_compiler
+    //****** End ***************************************
+
+    testApi deps.junit
+    androidTestApi deps.runner
+    androidTestApi deps.espresso_core
+}
