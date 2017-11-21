@@ -1,61 +1,26 @@
-if (isModule.toBoolean()) {
-    apply plugin: 'com.android.application'
-} else {
-    apply plugin: 'com.android.library'
-}
+apply from: "../module_public.gradle"
 
-android {
-    compileSdkVersion build_versions.target_sdk
-    buildToolsVersion build_versions.build_tools
-
-    resourcePrefix 'main_'//解决作为模块时候资源文件之间被覆盖问题
-
-    defaultConfig {
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        //****** ARouter ***************************************
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [ moduleName : project.getName() ]
-            }
-        }
-        //****** End ***************************************
-
-        //****** 动态设置额外信息 ***************************************
-        resValue "string", "build_time", buildTime()
-        resValue "string", "build_host", hostName()
-        resValue "string", "build_revision", revision()
-        //****** End ***************************************
-
-    }
-
-    sourceSets {
-        main{
-            if(isModule.toBoolean()){
-                manifest.srcFile 'src/main/app/AndroidManifest.xml'
-            }else{
-                manifest.srcFile 'src/main/AndroidManifest.xml'
-                //编译库的时候 排除app文件夹中的所有Java文件
-                java {
-                    exclude 'app/**'
-                }
+android.resourcePrefix 'main_'//解决作为模块时候资源文件之间被覆盖问题
+android.sourceSets {
+    main {
+        if (isModule.toBoolean()) {
+            manifest.srcFile 'src/main/app/AndroidManifest.xml'
+        } else {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            //编译库的时候 排除app文件夹中的所有Java文件
+            java {
+                exclude 'app/**'
             }
         }
     }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
 }
+
+//****** 动态设置额外信息 ***************************************
+android.defaultConfig.resValue "string", "build_time", buildTime() + "->" + android.defaultConfig.targetSdkVersion.apiLevel
+android.defaultConfig.resValue "string", "build_host", hostName() + "->" + project.getName()
+android.defaultConfig.resValue "string", "build_revision", revision()
+//****** End ***************************************
+
 //获取当前时间
 def buildTime() {
     return new Date().format("yyyy-MM-dd HH:mm:ss")
@@ -74,15 +39,3 @@ def revision() {
     return code.toString()
 }
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation project(':lib_base')
-    //****** ARouter ***************************************
-    annotationProcessor deps.arouter_compiler
-    //****** End ***************************************
-
-    testApi deps.junit
-    androidTestApi deps.runner
-    androidTestApi deps.espresso_core
-}

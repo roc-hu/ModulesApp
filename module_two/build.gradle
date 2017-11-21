@@ -1,64 +1,16 @@
-if (isModule.toBoolean()) {
-    apply plugin: 'com.android.application'
-} else {
-    apply plugin: 'com.android.library'
-}
+apply from: "../module_public.gradle"
 
-android {
-    compileSdkVersion build_versions.target_sdk
-    buildToolsVersion build_versions.build_tools
-
-    resourcePrefix 'two_'//解决作为模块时候资源文件之间被覆盖问题
-
-    defaultConfig {
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        //****** ARouter ***************************************
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [ moduleName : project.getName() ]
-            }
-        }
-        //****** End ***************************************
-    }
-
-    sourceSets {
-        main{
-            if(isModule.toBoolean()){
-                manifest.srcFile 'src/main/app/AndroidManifest.xml'
-            }else{
-                manifest.srcFile 'src/main/AndroidManifest.xml'
-                //编译库的时候 排除app文件夹中的所有Java文件
-                java {
-                    exclude 'app/**'
-                }
+android.resourcePrefix 'two_'//解决作为模块时候资源文件之间被覆盖问题
+android.sourceSets {
+    main{
+        if(isModule.toBoolean()){
+            manifest.srcFile 'src/main/app/AndroidManifest.xml'
+        }else{
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            //编译库的时候 排除app文件夹中的所有Java文件
+            java {
+                exclude 'app/**'
             }
         }
     }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation project(':lib_base')
-    //****** ARouter ***************************************
-    annotationProcessor deps.arouter_compiler
-    //****** End ***************************************
-
-    testApi deps.junit
-    androidTestApi deps.runner
-    androidTestApi deps.espresso_core
 }

@@ -11,7 +11,7 @@ versions.arouter_api = "1.2.4"
 versions.arouter_compiler = "1.1.4"
 versions.arouter_annotation = "1.0.4"
 
-versions.android_gradle_plugin = "3.0.0"//
+versions.android_gradle_plugin = "3.0.1"//
 versions.junit = "4.12"//
 versions.atsl_runner = "1.0.1"//
 versions.espresso = "3.0.1"//
