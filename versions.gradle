@@ -4,7 +4,7 @@
 **/
 ext.deps = [:]
 def versions = [:]
-versions.support = "26.1.0"//
+versions.support = "27.0.2"//
 versions.constraint_layout = "1.0.2"//
 versions.glide = "3.8.0"
 versions.arouter_api = "1.2.4"
