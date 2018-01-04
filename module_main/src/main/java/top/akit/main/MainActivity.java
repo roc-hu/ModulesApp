@@ -3,9 +3,12 @@ package top.akit.main;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+
 import top.akit.base.BaseActivity;
+import top.akit.util.GlideApp;
 
 public class MainActivity extends BaseActivity {
 
@@ -14,6 +17,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity_main);
         setTitle(R.string.main_app_name);
+
+        GlideApp.with(this).load("http://img2.imgtn.bdimg.com/it/u=3330490723,2313023675&fm=27&gp=0.jpg")
+                .into((ImageView) findViewById(R.id.iv_icon));
 
         findViewById(R.id.btn_test).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,7 +44,7 @@ public class MainActivity extends BaseActivity {
                 // 2. 跳转并携带参数
                 ARouter.getInstance().build("/two/1")
                         .withLong("key1", 666L)
-                        .withString("key3"                                           , "888")
+                        .withString("key3", "888")
 //                        .withObject("key4", new Test("Jack", "Rose"))
                         .navigation();
 //                Toast.makeText(v.getContext(),"Two",Toast.LENGTH_SHORT).show();

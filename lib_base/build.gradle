@@ -37,6 +37,11 @@ dependencies {
     api deps.arouter_annotation
     //****** End ***************************************
 
+    //****** Gilde ***************************************
+    api deps.glide
+    annotationProcessor deps.glide_compiler
+    //****** End ***************************************
+
     testApi deps.junit
     androidTestApi deps.runner
     androidTestApi deps.espresso_core
