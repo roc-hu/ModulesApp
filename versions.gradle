@@ -35,9 +35,9 @@ ext.deps = deps
 
 //编译配置
 def build_versions = [:]
-build_versions.min_sdk = 14
+build_versions.min_sdk = 16
 build_versions.target_sdk = 26
-build_versions.build_tools = "26.0.3"
+build_versions.build_tools = "27.0.3"
 ext.build_versions = build_versions
 
 
