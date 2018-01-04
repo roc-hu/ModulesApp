@@ -19,3 +19,4 @@
 
 [ARouter](https://github.com/alibaba/ARouter)
 [Glide](https://github.com/bumptech/glide)
+[Fragmentation](https://github.com/YoKeyword/Fragmentation)
